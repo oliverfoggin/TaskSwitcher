@@ -121,6 +121,10 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         super.viewWillAppear()
         
         currentPoint = Point()
+        views.flatMap{
+            (application, view) in
+            view.updateView()
+        }
     }
     
     func keyTapped(direction: Direction) {

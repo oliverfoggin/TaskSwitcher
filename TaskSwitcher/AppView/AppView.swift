@@ -35,19 +35,54 @@ class AppView: NSView {
         let stack = NSStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.orientation = .Vertical
+        stack.edgeInsets = NSEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
         stack.spacing = 5
         return stack
     }()
     
+    let labelStackView: NSStackView = {
+        let stack = NSStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.orientation = .Horizontal
+        stack.alignment = .CenterY
+        return stack
+    }()
+    
+    let appRunningImageView: NSImageView = {
+        let view = NSImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.image = NSImage(named: "Dot")
+        view.addConstraint(NSLayoutConstraint(item: view,
+            attribute: .Width,
+            relatedBy: .Equal,
+            toItem: nil,
+            attribute: .NotAnAttribute,
+            multiplier: 1.0,
+            constant: 10))
+        view.addConstraint(NSLayoutConstraint(item: view,
+            attribute: .Width,
+            relatedBy: .Equal,
+            toItem: view,
+            attribute: .Height,
+            multiplier: 1.0,
+            constant: 0))
+        return view
+    }()
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        
+
+        labelStackView.setViews([appRunningImageView, appNameLabel], inGravity: .Center)
+        mainStackView.setViews([iconView, labelStackView], inGravity: .Center)
         addSubview(mainStackView)
         
-        mainStackView.setViews([iconView, appNameLabel], inGravity: .Top)
-        mainStackView.setCustomSpacing(0, afterView: appNameLabel)
+        appRunningImageView.hidden = true
         
         setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupConstraints() {
@@ -64,8 +99,12 @@ class AppView: NSView {
             views: views))
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func updateView() {
+        if let a = application {
+            self.iconView.image = a.icon()
+            self.appNameLabel.stringValue = a.name
+            appRunningImageView.hidden = !a.isRunning()
+        }
     }
     
     var selected: Bool = false {
@@ -80,10 +119,7 @@ class AppView: NSView {
     
     var application:Application? {
         didSet {
-            if let a = application {
-                self.iconView.image = a.icon()
-                self.appNameLabel.stringValue = a.name
-            }
+            updateView()
         }
     }
 }

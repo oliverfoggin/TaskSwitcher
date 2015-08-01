@@ -26,6 +26,15 @@ struct Application {
         
         return NSWorkspace.sharedWorkspace().iconForFile(path)
     }
+    
+    func isRunning() -> Bool {
+        return NSWorkspace.sharedWorkspace().runningApplications.filter{
+            guard let name = $0.localizedName else {return false}
+            
+            return name == self.name
+        }.count == 1
+        
+    }
 }
 
 extension Application: Hashable, Equatable {
