@@ -51,7 +51,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
             Application(name: "Xcode-beta", xPos: 0, yPos: 1),
             Application(name: "Safari", xPos: 0, yPos: -1),
             Application(name: "Terminal", xPos: -1, yPos: 0),
-            Application(name: "Adium", xPos: 1, yPos: 0),
+            Application(name: "Sketch", xPos: 1, yPos: 0),
             Application(name: "SourceTree", xPos: 1, yPos: 1),
             Application(name: "TextEdit", xPos: -1, yPos: 1),
             Application(name: "TweetBot", xPos: -1, yPos: -1),
@@ -71,20 +71,19 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     }
     
     func createViews(width: CGFloat, height: CGFloat) -> (width: CGFloat, height: CGFloat) {
-        var minX = 0
-        var maxX = 0
-        var minY = 0
-        var maxY = 0
         
-        for application in applications {
-            minX = min(minX, application.xPos)
-            maxX = max(maxX, application.xPos)
-            minY = min(minY, application.yPos)
-            maxY = max(maxY, application.yPos)
+        let limits = applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) { (input: (minX: Int, maxX: Int, minY: Int, maxY: Int), application) -> (minX: Int, maxX: Int, minY: Int, maxY: Int) in
+            
+            return (
+                minX: min(input.minX, application.xPos),
+                maxX: max(input.maxX, application.xPos),
+                minY: min(input.minY, application.yPos),
+                maxY: max(input.maxY, application.yPos)
+            )
         }
         
-        let widthOffset: CGFloat = CGFloat(-minX) * width
-        let heightOffset: CGFloat = CGFloat(-minY) * height
+        let widthOffset: CGFloat = CGFloat(-limits.minX) * width
+        let heightOffset: CGFloat = CGFloat(-limits.minY) * height
         
         var maxWidth: CGFloat = 0
         var maxHeight: CGFloat = 0
