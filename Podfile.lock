@@ -1,0 +1,10 @@
+PODS:
+  - SGHotKeysLib (1.2)
+
+DEPENDENCIES:
+  - SGHotKeysLib (~> 1.2)
+
+SPEC CHECKSUMS:
+  SGHotKeysLib: dee516f25989e0c77312471f885b6ad9fc1cfb30
+
+COCOAPODS: 0.38.2

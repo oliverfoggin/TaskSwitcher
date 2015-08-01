@@ -1,0 +1,159 @@
+//
+//  AppSwitcherViewController.swift
+//  TaskSwitcher
+//
+//  Created by Oliver James Foggin on 31/07/2015.
+//  Copyright © 2015 Oliver James Foggin. All rights reserved.
+//
+
+import Cocoa
+
+struct Point {
+    var x: Int = 0
+    var y: Int = 0
+
+    func pointInDirection(direction: Direction) -> Point {
+        var point = Point(x: self.x, y: self.y)
+        
+        switch direction {
+        case .Left:
+            point.x -= 1
+        case .Right:
+            point.x += 1
+        case .Up:
+            point.y += 1
+        case .Down:
+            point.y -= 1
+        }
+        
+        return point
+    }
+}
+
+enum Direction {
+    case Up, Down, Left, Right
+}
+
+protocol KeyHandler {
+    func keyTapped(direction: Direction)
+}
+
+protocol ApplicationLauncher {
+    func setCurrentApplication(application: Application?)
+}
+
+class AppSwitcherViewController: NSViewController, KeyHandler {
+
+    var launcher: ApplicationLauncher?
+    
+    let applications: [Application] = {
+        return [
+            Application(name: "Xcode-beta", xPos: 0, yPos: 1),
+            Application(name: "Safari", xPos: 0, yPos: -1),
+            Application(name: "Terminal", xPos: -1, yPos: 0),
+            Application(name: "Adium", xPos: 1, yPos: 0),
+            Application(name: "SourceTree", xPos: 1, yPos: 1),
+            Application(name: "TextEdit", xPos: -1, yPos: 1),
+            Application(name: "TweetBot", xPos: -1, yPos: -1),
+        ]
+    }()
+    
+    var views = [Application: AppView]()
+    
+    var currentPoint = Point()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do view setup here.
+        let dimensions = createViews(150, height: 110)
+        
+        self.view.frame = CGRect(x: 0, y: 0, width: dimensions.width, height: dimensions.height)
+    }
+    
+    func createViews(width: CGFloat, height: CGFloat) -> (width: CGFloat, height: CGFloat) {
+        var minX = 0
+        var maxX = 0
+        var minY = 0
+        var maxY = 0
+        
+        for application in applications {
+            minX = min(minX, application.xPos)
+            maxX = max(maxX, application.xPos)
+            minY = min(minY, application.yPos)
+            maxY = max(maxY, application.yPos)
+        }
+        
+        let widthOffset: CGFloat = CGFloat(-minX) * width
+        let heightOffset: CGFloat = CGFloat(-minY) * height
+        
+        var maxWidth: CGFloat = 0
+        var maxHeight: CGFloat = 0
+        
+        for a in applications {
+            let x = CGFloat(a.xPos) * width + widthOffset
+            let y = CGFloat(a.yPos) * height + heightOffset
+            
+            let view = appViewWithApplication(a)
+            view.frame = CGRect(x: x, y: y, width: width, height: height)
+            
+            maxWidth = max(maxWidth, x + width)
+            maxHeight = max(maxHeight, y + height)
+            
+            self.view.addSubview(view)
+        }
+        
+        return (maxWidth, maxHeight)
+    }
+    
+    func appViewWithApplication(application: Application) -> AppView {
+        let view = AppView(frame: CGRectZero)
+        view.application = application
+        
+        views[application] = view
+        
+        return view
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        currentPoint = Point()
+    }
+    
+    func keyTapped(direction: Direction) {
+        moveInDirection(direction)
+    }
+    
+    func moveInDirection(direction: Direction) {
+        let point = currentPoint.pointInDirection(direction)
+        
+        if point.x == 0 && point.y == 0 {
+            currentPoint = Point()
+            
+            for (_, v) in views {
+                v.selected = false
+            }
+            
+            if let l = launcher {
+                l.setCurrentApplication(nil)
+            }
+            return;
+        }
+        
+        if let application = applicationAtPoint(point) {
+            currentPoint = point
+            
+            for (a, v) in views {
+                v.selected = a == application
+            }
+            
+            if let l = launcher {
+                l.setCurrentApplication(application)
+            }
+        }
+    }
+    
+    func applicationAtPoint(point: Point) -> Application? {
+        return applications.filter{$0.xPos == point.x && $0.yPos == point.y}.first
+    }
+}
