@@ -72,15 +72,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     
     func createViews(width: CGFloat, height: CGFloat) -> (width: CGFloat, height: CGFloat) {
         
-        let limits = applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) { (input: (minX: Int, maxX: Int, minY: Int, maxY: Int), application) -> (minX: Int, maxX: Int, minY: Int, maxY: Int) in
-            
-            return (
-                minX: min(input.minX, application.xPos),
-                maxX: max(input.maxX, application.xPos),
-                minY: min(input.minY, application.yPos),
-                maxY: max(input.maxY, application.yPos)
-            )
-        }
+        let limits = viewLimits()
         
         let widthOffset: CGFloat = CGFloat(-limits.minX) * width
         let heightOffset: CGFloat = CGFloat(-limits.minY) * height
@@ -102,6 +94,18 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         }
         
         return (maxWidth, maxHeight)
+    }
+    
+    func viewLimits() -> (minX: Int, maxX: Int, minY: Int, maxY: Int) {
+        return applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) { (input: (minX: Int, maxX: Int, minY: Int, maxY: Int), application) -> (minX: Int, maxX: Int, minY: Int, maxY: Int) in
+            
+            return (
+                minX: min(input.minX, application.xPos),
+                maxX: max(input.maxX, application.xPos),
+                minY: min(input.minY, application.yPos),
+                maxY: max(input.maxY, application.yPos)
+            )
+        }
     }
     
     func appViewWithApplication(application: Application) -> AppView {
