@@ -10,56 +10,58 @@ import Cocoa
 
 class AppView: NSView {
     
-    let iconView: NSImageView
-    let appNameLabel: NSTextField
+    let iconView: NSImageView = {
+        let view = NSImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.imageScaling = NSImageScaling.ScaleProportionallyUpOrDown
+        return view
+    }()
+    
+    let appNameLabel: NSTextField = {
+        let label = NSTextField()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = NSFont.boldSystemFontOfSize(17)
+        label.textColor = NSColor.whiteColor()
+        label.editable = false
+        label.selectable = false
+        label.backgroundColor = NSColor.clearColor()
+        label.drawsBackground = true
+        label.bordered = false
+        label.setContentCompressionResistancePriority(1000, forOrientation: NSLayoutConstraintOrientation.Vertical)
+        return label
+    }()
+    
+    let mainStackView: NSStackView = {
+        let stack = NSStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.orientation = .Vertical
+        stack.spacing = 5
+        return stack
+    }()
     
     override init(frame frameRect: NSRect) {
-        iconView = NSImageView()
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.imageScaling = NSImageScaling.ScaleProportionallyUpOrDown
-        
-        appNameLabel = NSTextField()
-        appNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        appNameLabel.font = NSFont.boldSystemFontOfSize(17)
-        appNameLabel.textColor = NSColor.whiteColor()
-        appNameLabel.editable = false
-        appNameLabel.selectable = false
-        appNameLabel.backgroundColor = NSColor.clearColor()
-        appNameLabel.drawsBackground = true
-        appNameLabel.bordered = false
-        appNameLabel.setContentCompressionResistancePriority(1000, forOrientation: NSLayoutConstraintOrientation.Vertical)
-        
         super.init(frame: frameRect)
         
-        addSubview(iconView)
-        addSubview(appNameLabel)
+        addSubview(mainStackView)
+        
+        mainStackView.setViews([iconView, appNameLabel], inGravity: .Top)
+        mainStackView.setCustomSpacing(0, afterView: appNameLabel)
         
         setupConstraints()
     }
     
     func setupConstraints() {
-        let views = ["iconView": iconView, "appNameLabel": appNameLabel]
+        let views = ["stackView": mainStackView]
         
-        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[iconView]-[appNameLabel]-5-|",
-            options: NSLayoutFormatOptions.AlignAllCenterX,
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stackView]|",
+            options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil,
             views: views))
         
-        self.addConstraint(NSLayoutConstraint(item: iconView,
-            attribute: NSLayoutAttribute.CenterX,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: self,
-            attribute: NSLayoutAttribute.CenterX,
-            multiplier: 1.0,
-            constant: 0.0))
-        
-        self.addConstraint(NSLayoutConstraint(item: iconView,
-            attribute: NSLayoutAttribute.Width,
-            relatedBy: NSLayoutRelation.Equal,
-            toItem: iconView,
-            attribute: NSLayoutAttribute.Height,
-            multiplier: 1.0,
-            constant: 0.0))
+        self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[stackView]|",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil,
+            views: views))
     }
     
     required init?(coder: NSCoder) {
