@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A235d" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Task Switcher Application-->
@@ -663,94 +662,6 @@
                 </application>
             </objects>
             <point key="canvasLocation" x="52" y="49"/>
-        </scene>
-        <!--Window Controller-->
-        <scene sceneID="HKb-7R-sCa">
-            <objects>
-                <windowController storyboardIdentifier="Preferences" id="7qb-00-j1Q" sceneMemberID="viewController">
-                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Egv-T3-u3B">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="181" y="195" width="480" height="270"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1366" height="768"/>
-                    </window>
-                    <connections>
-                        <segue destination="ryD-w7-gW4" kind="relationship" relationship="window.shadowedContentViewController" id="Zft-wj-7jx"/>
-                    </connections>
-                </windowController>
-                <customObject id="8LV-hi-wyH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="52" y="280"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="aKK-vH-lnp">
-            <objects>
-                <viewController id="ryD-w7-gW4" sceneMemberID="viewController">
-                    <view key="view" id="8YJ-ZD-CKp">
-                        <rect key="frame" x="0.0" y="0.0" width="532" height="270"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <stackView distribution="equalCentering" orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nd4-Jg-6gR">
-                                <rect key="frame" x="0.0" y="0.0" width="532" height="270"/>
-                                <subviews>
-                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r9z-sS-gRR">
-                                        <rect key="frame" x="30" y="124" width="472" height="22"/>
-                                        <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="um2-Bh-T7q">
-                                                <rect key="frame" x="-2" y="3" width="89" height="17"/>
-                                                <animations/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Shortcut Keys" id="r4k-lQ-uqY">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MV9-PP-SmU">
-                                                <rect key="frame" x="93" y="0.0" width="379" height="22"/>
-                                                <animations/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="YQG-fc-IGb">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </subviews>
-                                        <animations/>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
-                                </subviews>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstItem="r9z-sS-gRR" firstAttribute="leading" secondItem="nd4-Jg-6gR" secondAttribute="leading" constant="30" id="kOB-CF-1fW"/>
-                                    <constraint firstAttribute="trailing" secondItem="r9z-sS-gRR" secondAttribute="trailing" constant="30" id="uaU-Fz-pTf"/>
-                                </constraints>
-                                <visibilityPriorities>
-                                    <integer value="1000"/>
-                                </visibilityPriorities>
-                                <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
-                                </customSpacing>
-                            </stackView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="nd4-Jg-6gR" secondAttribute="bottom" id="2hd-hR-4zt"/>
-                            <constraint firstItem="nd4-Jg-6gR" firstAttribute="top" secondItem="8YJ-ZD-CKp" secondAttribute="top" id="T4J-6i-NA5"/>
-                            <constraint firstItem="nd4-Jg-6gR" firstAttribute="leading" secondItem="8YJ-ZD-CKp" secondAttribute="leading" id="Y7h-jy-QcA"/>
-                            <constraint firstAttribute="trailing" secondItem="nd4-Jg-6gR" secondAttribute="trailing" id="mzE-Wk-hmj"/>
-                        </constraints>
-                        <animations/>
-                    </view>
-                </viewController>
-                <customObject id="wLz-UV-D8N" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="674" y="275"/>
         </scene>
     </scenes>
 </document>

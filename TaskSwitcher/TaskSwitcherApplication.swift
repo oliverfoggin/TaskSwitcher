@@ -57,13 +57,13 @@ class TaskSwitcherApplication: NSApplication {
         
         switch key.identifier {
         case "LeftKey":
-            appSwitcherViewController.keyTapped(Direction.Left)
+            appSwitcherViewController.keyTapped(.Left)
         case "RightKey":
-            appSwitcherViewController.keyTapped(Direction.Right)
+            appSwitcherViewController.keyTapped(.Right)
         case "UpKey":
-            appSwitcherViewController.keyTapped(Direction.Up)
+            appSwitcherViewController.keyTapped(.Up)
         case "DownKey":
-            appSwitcherViewController.keyTapped(Direction.Down)
+            appSwitcherViewController.keyTapped(.Down)
         default:
             assert(false, "Unknown key")
         }
