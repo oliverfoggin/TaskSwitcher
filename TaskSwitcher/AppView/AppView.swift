@@ -61,8 +61,6 @@ class AppView: NSView {
         stack.spacing = 5
         if #available(OSX 10.11, *) {
             stack.distribution = .Fill
-        } else {
-            // Fallback on earlier versions
         }
         return stack
     }()
@@ -82,8 +80,6 @@ class AppView: NSView {
         stack.spacing = 4
         if #available(OSX 10.11, *) {
             stack.distribution = .GravityAreas
-        } else {
-            // Fallback on earlier versions
         }
         return stack
     }()
@@ -116,7 +112,6 @@ class AppView: NSView {
             mainStackView.addArrangedSubview(iconView)
             mainStackView.addArrangedSubview(labelStackView)
         } else {
-            // Fallback on earlier versions
             mainStackView.setViews([iconView, labelStackView], inGravity: .Center)
         }
         
