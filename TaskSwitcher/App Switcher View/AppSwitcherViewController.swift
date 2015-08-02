@@ -66,7 +66,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        let dimensions = createViews(150, height: 110)
+        let dimensions = createViews(162, height: 100)
         
         self.view.frame = CGRect(x: 0, y: 0, width: dimensions.width, height: dimensions.height)
     }

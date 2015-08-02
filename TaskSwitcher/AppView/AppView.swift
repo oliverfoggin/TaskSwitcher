@@ -19,7 +19,7 @@ class AppView: NSView {
     let iconView: NSImageView = {
         let view = NSImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.imageScaling = NSImageScaling.ScaleProportionallyUpOrDown
+        view.imageScaling = .ScaleProportionallyUpOrDown
         view.addConstraint(NSLayoutConstraint(item: view,
             attribute: .Width,
             relatedBy: .Equal,
@@ -33,11 +33,12 @@ class AppView: NSView {
     let appNameLabel: NSTextField = {
         let label = NSTextField()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = NSFont.boldSystemFontOfSize(17)
-        label.textColor = NSColor.whiteColor()
+        label.font = .boldSystemFontOfSize(17)
+        label.textColor = .whiteColor()
+        label.alignment = .Center
         label.editable = false
         label.selectable = false
-        label.backgroundColor = NSColor.clearColor()
+        label.backgroundColor = .clearColor()
         label.drawsBackground = true
         label.bordered = false
         label.setContentCompressionResistancePriority(1000, forOrientation: .Vertical)
@@ -86,6 +87,11 @@ class AppView: NSView {
         stack.orientation = .Horizontal
         stack.alignment = .Baseline
         stack.spacing = 4
+        if #available(OSX 10.11, *) {
+            stack.distribution = .GravityAreas
+        } else {
+            // Fallback on earlier versions
+        }
         return stack
     }()
     
@@ -110,9 +116,17 @@ class AppView: NSView {
         
         wantsLayer = true
         layer?.insertSublayer(highlightLayer, atIndex: 0)
-
+        
         labelStackView.setViews([appRunningImageView, appNameLabel], inGravity: .Center)
-        mainStackView.setViews([iconView, labelStackView], inGravity: .Center)
+        
+        if #available(OSX 10.11, *) {
+            mainStackView.addArrangedSubview(iconView)
+            mainStackView.addArrangedSubview(labelStackView)
+        } else {
+            // Fallback on earlier versions
+            mainStackView.setViews([iconView, labelStackView], inGravity: .Center)
+        }
+        
         addSubview(mainStackView)
         
         appRunningImageView.hidden = true
