@@ -62,6 +62,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     }()
     
     var views = [Application: AppView]()
+    var middleView: AppView?
     
     var currentPoint = Point()
     
@@ -69,8 +70,22 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         super.viewDidLoad()
         // Do view setup here.
         let dimensions = createViews(162, height: 100)
+        createCenterView(162, height: 100)
         
         self.view.frame = CGRect(x: 0, y: 0, width: dimensions.width, height: dimensions.height)
+    }
+    
+    func createCenterView(width: CGFloat, height: CGFloat) {
+        let limits = viewLimits()
+        
+        let widthOffset: CGFloat = CGFloat(-limits.minX) * width
+        let heightOffset: CGFloat = CGFloat(-limits.minY) * height
+        
+        middleView = AppView(frame: CGRect(x: widthOffset, y: heightOffset, width: width, height: height))
+        self.view.addSubview(middleView!)
+        
+        middleView!.iconView.image = NSImage(named: "Cross")
+        middleView!.appNameLabel.stringValue = "Close"
     }
     
     func createViews(width: CGFloat, height: CGFloat) -> (width: CGFloat, height: CGFloat) {
@@ -145,6 +160,10 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         if point.x == 0 && point.y == 0 {
             currentPoint = Point()
             
+            if let v = middleView {
+                v.selected = true
+            }
+            
             for (_, v) in views {
                 v.selected = false
             }
@@ -157,6 +176,10 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         
         if let application = applicationAtPoint(point) {
             currentPoint = point
+            
+            if let v = middleView {
+                v.selected = false
+            }
             
             for (a, v) in views {
                 v.selected = a == application
