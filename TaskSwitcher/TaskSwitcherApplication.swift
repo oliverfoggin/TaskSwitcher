@@ -20,7 +20,8 @@ class TaskSwitcherApplication: NSApplication {
             window = controller.window,
             vC = window.contentViewController as? AppSwitcherViewController else { return NSWindow() }
         
-        window.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.4)
+//        window.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.4)
+        window.backgroundColor = NSColor.clearColor()
         
         self.appSwitcherViewController = vC
         vC.launcher = self

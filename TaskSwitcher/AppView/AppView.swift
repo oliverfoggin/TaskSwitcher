@@ -10,6 +10,12 @@ import Cocoa
 
 class AppView: NSView {
     
+    let highlightLayer: CALayer = {
+        let layer = CALayer()
+        layer.cornerRadius = 6
+        return layer
+    }()
+    
     let iconView: NSImageView = {
         let view = NSImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -78,11 +84,32 @@ class AppView: NSView {
         let stack = NSStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.orientation = .Horizontal
+        stack.alignment = .Baseline
+        stack.spacing = 4
         return stack
     }()
     
+    var selected: Bool = false {
+        didSet {
+            if selected {
+                highlightLayer.backgroundColor = NSColor(red: 7/255, green: 66/255, blue: 14/255, alpha: 0.9).CGColor
+            } else {
+                highlightLayer.backgroundColor = NSColor(white: 0.0, alpha: 0.9).CGColor
+            }
+        }
+    }
+    
+    var application:Application? {
+        didSet {
+            updateView()
+        }
+    }
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
+        
+        wantsLayer = true
+        layer?.insertSublayer(highlightLayer, atIndex: 0)
 
         labelStackView.setViews([appRunningImageView, appNameLabel], inGravity: .Center)
         mainStackView.setViews([iconView, labelStackView], inGravity: .Center)
@@ -119,27 +146,15 @@ class AppView: NSView {
             views: views))
     }
     
+    override func layout() {
+        highlightLayer.frame = CGRectInset(bounds, 5, 5)
+    }
+    
     func updateView() {
         if let a = application {
-            self.iconView.image = a.icon()
+            self.iconView.image = a.icon
             self.appNameLabel.stringValue = a.name
-            appRunningImageView.hidden = !a.isRunning()
-        }
-    }
-    
-    var selected: Bool = false {
-        didSet {
-            if selected {
-                appNameLabel.textColor = NSColor.redColor()
-            } else {
-                appNameLabel.textColor = NSColor.whiteColor()
-            }
-        }
-    }
-    
-    var application:Application? {
-        didSet {
-            updateView()
+            appRunningImageView.hidden = !a.isRunning
         }
     }
 }

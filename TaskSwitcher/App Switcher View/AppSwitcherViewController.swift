@@ -55,6 +55,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
             Application(name: "SourceTree", xPos: 1, yPos: 1),
             Application(name: "TextEdit", xPos: -1, yPos: 1),
             Application(name: "TweetBot", xPos: -1, yPos: -1),
+            Application(name: "Calendar", xPos: 1, yPos: -1),
         ]
     }()
     

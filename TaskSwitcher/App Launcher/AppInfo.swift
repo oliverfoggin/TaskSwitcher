@@ -13,27 +13,32 @@ struct Application {
     let xPos: Int
     let yPos: Int
     
+    var icon: NSImage {
+        get {
+            guard let path = filePath else {return NSImage(named: "AppIcon")!}
+            
+            return NSWorkspace.sharedWorkspace().iconForFile(path)
+        }
+    }
+    
+    var filePath: String? {
+        get {
+            return NSWorkspace.sharedWorkspace().fullPathForApplication(self.name)
+        }
+    }
+    
+    var isRunning: Bool {
+        get {
+            return NSWorkspace.sharedWorkspace().runningApplications.filter{
+                guard let name = $0.localizedName else {return false}
+                
+                return name == self.name
+            }.count == 1
+        }
+    }
+    
     func launch() {
         NSWorkspace.sharedWorkspace().launchApplication(self.name)
-    }
-    
-    func filePath() -> String? {
-        return NSWorkspace.sharedWorkspace().fullPathForApplication(self.name)
-    }
-    
-    func icon() -> NSImage {
-        guard let path = filePath() else {return NSImage(named: "AppIcon")!}
-        
-        return NSWorkspace.sharedWorkspace().iconForFile(path)
-    }
-    
-    func isRunning() -> Bool {
-        return NSWorkspace.sharedWorkspace().runningApplications.filter{
-            guard let name = $0.localizedName else {return false}
-            
-            return name == self.name
-        }.count == 1
-        
     }
 }
 
