@@ -39,6 +39,7 @@ class TaskSwitcherApplication: NSApplication {
                 // launch app
                 launchApplication(selectedApplication)
                 selectedApplication = nil
+                appSwitcherViewController.resetViews()
                 window.orderOut(nil)
             }
         }

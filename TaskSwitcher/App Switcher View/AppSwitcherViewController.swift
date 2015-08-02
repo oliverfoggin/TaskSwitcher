@@ -123,10 +123,15 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     override func viewWillAppear() {
         super.viewWillAppear()
         
+        resetViews()
+    }
+    
+    func resetViews() {
         currentPoint = Point()
         
         for (_, view) in views {
             view.selected = false
+            view.updateView()
         }
     }
     

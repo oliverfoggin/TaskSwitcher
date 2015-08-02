@@ -28,9 +28,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         statusItem.menu = menu
     }
-
-    func doSomething(thing first: String, times: Int = 1) {
+    
+    @IBAction func preferences(sender: NSMenuItem) {
+        guard let prefsController = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateControllerWithIdentifier("Preferences")
+            as? NSWindowController,
+        window = prefsController.window else {return}
         
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+    }
+    
+    func modifierKeys() -> Int {
+        if let value = NSUserDefaults.standardUserDefaults().valueForKey("ModifierKeys"),
+        modifier = value.integerValue{
+            return modifier
+        }
+        
+        return optionKey | controlKey | cmdKey
     }
     
     func registerHotKeys() {
@@ -38,19 +53,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let hotKeyCenter = SGHotKeyCenter.sharedCenter()
         
-        let leftKeyCombo = SGKeyCombo(keyCode: 123, modifiers: optionKey|controlKey|cmdKey)
+        let leftKeyCombo = SGKeyCombo(keyCode: 123, modifiers: modifierKeys())
         let leftKey = SGHotKey(identifier: "LeftKey", keyCombo: leftKeyCombo, target: tsa, action: "tapped:")
         hotKeyCenter.registerHotKey(leftKey)
         
-        let rightKeyCombo = SGKeyCombo(keyCode: 124, modifiers: optionKey|controlKey|cmdKey)
+        let rightKeyCombo = SGKeyCombo(keyCode: 124, modifiers: modifierKeys())
         let rightKey = SGHotKey(identifier: "RightKey", keyCombo: rightKeyCombo, target: tsa, action: "tapped:")
         hotKeyCenter.registerHotKey(rightKey)
         
-        let upKeyCombo = SGKeyCombo(keyCode: 126, modifiers: optionKey|controlKey|cmdKey)
+        let upKeyCombo = SGKeyCombo(keyCode: 126, modifiers: modifierKeys())
         let upKey = SGHotKey(identifier: "UpKey", keyCombo: upKeyCombo, target: tsa, action: "tapped:")
         hotKeyCenter.registerHotKey(upKey)
         
-        let downKeyCombo = SGKeyCombo(keyCode: 125, modifiers: optionKey|controlKey|cmdKey)
+        let downKeyCombo = SGKeyCombo(keyCode: 125, modifiers: modifierKeys())
         let downKey = SGHotKey(identifier: "DownKey", keyCombo: downKeyCombo, target: tsa, action: "tapped:")
         hotKeyCenter.registerHotKey(downKey)
     }

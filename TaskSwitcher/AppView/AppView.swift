@@ -10,6 +10,14 @@ import Cocoa
 
 class AppView: NSView {
     
+    let selectedColor: NSColor = {
+        return NSColor(red: 7/255, green: 66/255, blue: 14/255, alpha: 0.9)
+    }()
+    
+    let unselectedColor: NSColor = {
+        return NSColor(white: 0.0, alpha: 0.9)
+    }()
+    
     let highlightLayer: CALayer = {
         let layer = CALayer()
         layer.cornerRadius = 6
@@ -70,7 +78,7 @@ class AppView: NSView {
         let stack = NSStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.orientation = .Horizontal
-        stack.alignment = .Baseline
+        stack.alignment = .CenterY
         stack.spacing = 4
         if #available(OSX 10.11, *) {
             stack.distribution = .GravityAreas
@@ -83,9 +91,9 @@ class AppView: NSView {
     var selected: Bool = false {
         didSet {
             if selected {
-                highlightLayer.backgroundColor = NSColor(red: 7/255, green: 66/255, blue: 14/255, alpha: 0.9).CGColor
+                highlightLayer.backgroundColor = selectedColor.CGColor
             } else {
-                highlightLayer.backgroundColor = NSColor(white: 0.0, alpha: 0.9).CGColor
+                highlightLayer.backgroundColor = unselectedColor.CGColor
             }
         }
     }
