@@ -20,7 +20,6 @@ class TaskSwitcherApplication: NSApplication {
             window = controller.window,
             vC = window.contentViewController as? AppSwitcherViewController else { return NSWindow() }
         
-//        window.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.4)
         window.backgroundColor = NSColor.clearColor()
         
         self.appSwitcherViewController = vC
@@ -52,8 +51,8 @@ class TaskSwitcherApplication: NSApplication {
     }
     
     func tapped(key: SGHotKey) {
-        showAppBrowserWindow()
         activateIgnoringOtherApps(true)
+        showAppBrowserWindow()
         
         switch key.identifier {
         case "LeftKey":
@@ -65,7 +64,7 @@ class TaskSwitcherApplication: NSApplication {
         case "DownKey":
             appSwitcherViewController.keyTapped(Direction.Down)
         default:
-            print("Unknown key")
+            assert(false, "Unknown key")
         }
     }
 }

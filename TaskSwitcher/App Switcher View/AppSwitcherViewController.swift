@@ -42,6 +42,8 @@ protocol ApplicationLauncher {
     func setCurrentApplication(application: Application?)
 }
 
+typealias Limits = (minX: Int, maxX: Int, minY: Int, maxY: Int)
+
 class AppSwitcherViewController: NSViewController, KeyHandler {
 
     var launcher: ApplicationLauncher?
@@ -97,9 +99,9 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         return (maxWidth, maxHeight)
     }
     
-    func viewLimits() -> (minX: Int, maxX: Int, minY: Int, maxY: Int) {
-        return applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) { (input: (minX: Int, maxX: Int, minY: Int, maxY: Int), application) -> (minX: Int, maxX: Int, minY: Int, maxY: Int) in
-            
+    func viewLimits() -> Limits {
+        return applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) {
+            (input: Limits, application) -> Limits in
             return (
                 minX: min(input.minX, application.xPos),
                 maxX: max(input.maxX, application.xPos),
@@ -122,9 +124,9 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         super.viewWillAppear()
         
         currentPoint = Point()
-        views.flatMap{
-            (application, view) in
-            view.updateView()
+        
+        for (_, view) in views {
+            view.selected = false
         }
     }
     

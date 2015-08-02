@@ -35,7 +35,6 @@ class AppView: NSView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .boldSystemFontOfSize(17)
         label.textColor = .whiteColor()
-        label.alignment = .Center
         label.editable = false
         label.selectable = false
         label.backgroundColor = .clearColor()
