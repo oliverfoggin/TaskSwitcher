@@ -64,20 +64,6 @@ class AppView: NSView {
         let view = NSImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.image = NSImage(named: "Dot")
-        view.addConstraint(NSLayoutConstraint(item: view,
-            attribute: .Width,
-            relatedBy: .Equal,
-            toItem: nil,
-            attribute: .NotAnAttribute,
-            multiplier: 1.0,
-            constant: 10))
-        view.addConstraint(NSLayoutConstraint(item: view,
-            attribute: .Width,
-            relatedBy: .Equal,
-            toItem: view,
-            attribute: .Height,
-            multiplier: 1.0,
-            constant: 0))
         return view
     }()
     
@@ -161,6 +147,7 @@ class AppView: NSView {
     }
     
     override func layout() {
+        super.layout()
         highlightLayer.frame = CGRectInset(bounds, 5, 5)
     }
     
