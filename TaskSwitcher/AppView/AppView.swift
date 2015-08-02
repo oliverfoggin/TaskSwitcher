@@ -14,6 +14,13 @@ class AppView: NSView {
         let view = NSImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.imageScaling = NSImageScaling.ScaleProportionallyUpOrDown
+        view.addConstraint(NSLayoutConstraint(item: view,
+            attribute: .Width,
+            relatedBy: .Equal,
+            toItem: view,
+            attribute: .Height,
+            multiplier: 1.0,
+            constant: 0))
         return view
     }()
     
@@ -27,7 +34,8 @@ class AppView: NSView {
         label.backgroundColor = NSColor.clearColor()
         label.drawsBackground = true
         label.bordered = false
-        label.setContentCompressionResistancePriority(1000, forOrientation: NSLayoutConstraintOrientation.Vertical)
+        label.setContentCompressionResistancePriority(1000, forOrientation: .Vertical)
+        label.setContentHuggingPriority(1000, forOrientation: .Vertical)
         return label
     }()
     
@@ -37,14 +45,11 @@ class AppView: NSView {
         stack.orientation = .Vertical
         stack.edgeInsets = NSEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
         stack.spacing = 5
-        return stack
-    }()
-    
-    let labelStackView: NSStackView = {
-        let stack = NSStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.orientation = .Horizontal
-        stack.alignment = .CenterY
+        if #available(OSX 10.11, *) {
+            stack.distribution = .Fill
+        } else {
+            // Fallback on earlier versions
+        }
         return stack
     }()
     
@@ -69,6 +74,13 @@ class AppView: NSView {
         return view
     }()
     
+    let labelStackView: NSStackView = {
+        let stack = NSStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.orientation = .Horizontal
+        return stack
+    }()
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
@@ -87,6 +99,14 @@ class AppView: NSView {
     
     func setupConstraints() {
         let views = ["stackView": mainStackView]
+        
+        self.addConstraint(NSLayoutConstraint(item: labelStackView,
+            attribute: .Height,
+            relatedBy: .Equal,
+            toItem: appNameLabel,
+            attribute: .Height,
+            multiplier: 1.0,
+            constant: 0.0))
         
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[stackView]|",
             options: NSLayoutFormatOptions(rawValue: 0),
