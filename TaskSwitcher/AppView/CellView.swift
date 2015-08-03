@@ -8,10 +8,10 @@
 
 import Cocoa
 
-class GridView: NSView {
+class CellView: NSView {
     
     let selectedColor: NSColor = {
-    return NSColor(red: 7/255, green: 66/255, blue: 14/255, alpha: 0.9)
+        return NSColor(red: 7/255, green: 66/255, blue: 14/255, alpha: 0.9)
     }()
     
     let unselectedColor: NSColor = {

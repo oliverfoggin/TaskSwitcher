@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class AppView: GridView {
+class AppView: CellView {
     
     let appRunningImageView: NSImageView = {
         let view = NSImageView()

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class CloseView: GridView {
+class CloseView: CellView {
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)

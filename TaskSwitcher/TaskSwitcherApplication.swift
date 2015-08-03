@@ -8,10 +8,21 @@
 
 import Cocoa
 
+enum KeyEvent {
+    case Up, Down, Left, Right, Launch
+}
+
+protocol KeyListener {
+    func keyEventTriggered(keyEvent: KeyEvent)
+}
+
 class TaskSwitcherApplication: NSApplication {
     
-    var selectedApplication: Application?
     var appSwitcherViewController: AppSwitcherViewController = AppSwitcherViewController()
+    
+    lazy var keyListeners: [KeyListener] = {
+        return [self, self.appSwitcherViewController]
+    }()
     
     lazy var window: NSWindow = {
         let storyboard = NSStoryboard(name: "AppSwitcherStoryboard", bundle: NSBundle.mainBundle())
@@ -23,7 +34,6 @@ class TaskSwitcherApplication: NSApplication {
         window.backgroundColor = NSColor.clearColor()
         
         self.appSwitcherViewController = vC
-        vC.launcher = self
         
         return window
     }()
@@ -37,10 +47,7 @@ class TaskSwitcherApplication: NSApplication {
             
             if !optionKeyDown && !commandKeyDown && !controlKeyDown {
                 // launch app
-                launchApplication(selectedApplication)
-                selectedApplication = nil
-                appSwitcherViewController.resetViews()
-                window.orderOut(nil)
+                triggerKeyListeners(.Launch)
             }
         }
         super.sendEvent(event)
@@ -55,29 +62,46 @@ class TaskSwitcherApplication: NSApplication {
         activateIgnoringOtherApps(true)
         showAppBrowserWindow()
         
+        var keyEvent: KeyEvent?
+        
         switch key.identifier {
         case "LeftKey":
-            appSwitcherViewController.keyTapped(.Left)
+            keyEvent = .Left
         case "RightKey":
-            appSwitcherViewController.keyTapped(.Right)
+            keyEvent = .Right
         case "UpKey":
-            appSwitcherViewController.keyTapped(.Up)
+            keyEvent = .Up
         case "DownKey":
-            appSwitcherViewController.keyTapped(.Down)
+            keyEvent = .Down
         default:
-            assert(false, "Unknown key")
+            print("Not handled here")
+        }
+        
+        if let event = keyEvent {
+            triggerKeyListeners(event)
+        }
+    }
+    
+    func triggerKeyListeners(keyEvent: KeyEvent) {
+        for listener in keyListeners {
+            listener.keyEventTriggered(keyEvent)
         }
     }
 }
 
-extension TaskSwitcherApplication: ApplicationLauncher {
-    func setCurrentApplication(application: Application?) {
-        selectedApplication = application
+extension TaskSwitcherApplication: KeyListener {
+    func keyEventTriggered(keyEvent: KeyEvent) {
+        if keyEvent == .Launch {
+            if let a = appSwitcherViewController.applicationManager.selectedApplication {
+                launchApplication(a)
+            }
+            appSwitcherViewController.applicationManager.selectedApplication = nil
+            appSwitcherViewController.resetViews()
+            window.orderOut(nil)
+        }
     }
     
-    func launchApplication(application: Application?) {
-        guard let a = application else {return}
-        
-        a.launch()
+    func launchApplication(application: Application) {
+        application.launch()
     }
 }

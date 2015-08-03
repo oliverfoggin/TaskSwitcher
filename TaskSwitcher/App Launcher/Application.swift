@@ -51,4 +51,6 @@ extension Application: Hashable, Equatable {
 
 func ==(lhs: Application, rhs: Application) -> Bool {
     return lhs.name == rhs.name
+    && lhs.xPos == rhs.xPos
+    && lhs.yPos == rhs.yPos
 }

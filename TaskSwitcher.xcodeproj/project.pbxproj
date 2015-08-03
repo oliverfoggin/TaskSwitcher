@@ -15,8 +15,8 @@
 		A6694EEE1B666EE30070AD9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6694EED1B666EE30070AD9A /* Assets.xcassets */; };
 		A6694EF11B666EE30070AD9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6694EEF1B666EE30070AD9A /* Main.storyboard */; };
 		A6694EFA1B666FFC0070AD9A /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6694EF91B666FFC0070AD9A /* AppView.swift */; };
-		A66981C71B6B9D9B0025C267 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66981C61B6B9D9B0025C267 /* AppInfo.swift */; };
-		F66246A01B6F9982001B0DD5 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F662469F1B6F9982001B0DD5 /* GridView.swift */; };
+		A66981C71B6B9D9B0025C267 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66981C61B6B9D9B0025C267 /* Application.swift */; };
+		F66246A01B6F9982001B0DD5 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F662469F1B6F9982001B0DD5 /* CellView.swift */; };
 		F66246A21B6F99FC001B0DD5 /* CloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66246A11B6F99FC001B0DD5 /* CloseView.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,9 +33,9 @@
 		A6694EF21B666EE30070AD9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A6694EF91B666FFC0070AD9A /* AppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppView.swift; path = AppView/AppView.swift; sourceTree = "<group>"; };
 		A6694EFD1B668BF00070AD9A /* TaskSwitcher-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TaskSwitcher-Bridging-Header.h"; sourceTree = "<group>"; };
-		A66981C61B6B9D9B0025C267 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppInfo.swift; path = "App Launcher/AppInfo.swift"; sourceTree = "<group>"; };
+		A66981C61B6B9D9B0025C267 /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Application.swift; path = "App Launcher/Application.swift"; sourceTree = "<group>"; };
 		DEB856B9636D1B55E1785C5C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F662469F1B6F9982001B0DD5 /* GridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridView.swift; path = AppView/GridView.swift; sourceTree = "<group>"; };
+		F662469F1B6F9982001B0DD5 /* CellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellView.swift; path = AppView/CellView.swift; sourceTree = "<group>"; };
 		F66246A11B6F99FC001B0DD5 /* CloseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseView.swift; path = AppView/CloseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,7 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				A6694EF91B666FFC0070AD9A /* AppView.swift */,
-				F662469F1B6F9982001B0DD5 /* GridView.swift */,
+				F662469F1B6F9982001B0DD5 /* CellView.swift */,
 				F66246A11B6F99FC001B0DD5 /* CloseView.swift */,
 			);
 			name = AppView;
@@ -116,7 +116,7 @@
 		A66981C51B6B9D810025C267 /* App Launcher */ = {
 			isa = PBXGroup;
 			children = (
-				A66981C61B6B9D9B0025C267 /* AppInfo.swift */,
+				A66981C61B6B9D9B0025C267 /* Application.swift */,
 			);
 			name = "App Launcher";
 			sourceTree = "<group>";
@@ -236,12 +236,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A66981C71B6B9D9B0025C267 /* AppInfo.swift in Sources */,
+				A66981C71B6B9D9B0025C267 /* Application.swift in Sources */,
 				A6694EEA1B666EE30070AD9A /* AppDelegate.swift in Sources */,
 				F66246A21B6F99FC001B0DD5 /* CloseView.swift in Sources */,
 				A6694EFA1B666FFC0070AD9A /* AppView.swift in Sources */,
 				A663F8821B6BA46B00CC9BAD /* TaskSwitcherApplication.swift in Sources */,
-				F66246A01B6F9982001B0DD5 /* GridView.swift in Sources */,
+				F66246A01B6F9982001B0DD5 /* CellView.swift in Sources */,
 				A663F8891B6BD38C00CC9BAD /* AppSwitcherViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

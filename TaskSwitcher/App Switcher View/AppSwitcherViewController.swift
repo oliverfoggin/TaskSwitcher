@@ -8,6 +8,27 @@
 
 import Cocoa
 
+class ApplicationManager {
+    let applications: [Application] = {
+        return [
+            Application(name: "Xcode-beta", xPos: 0, yPos: 1),
+            Application(name: "Safari", xPos: 0, yPos: -1),
+            Application(name: "Terminal", xPos: -1, yPos: 0),
+            Application(name: "Sketch", xPos: 1, yPos: 0),
+            Application(name: "SourceTree", xPos: 1, yPos: 1),
+            Application(name: "TextEdit", xPos: -1, yPos: 1),
+            Application(name: "Tweetbot", xPos: -1, yPos: -1),
+            Application(name: "Calendar", xPos: 1, yPos: -1),
+        ]
+    }()
+    
+    var selectedApplication: Application?
+    
+    func applicationAtPoint(point: Point) -> Application? {
+        return applications.filter{$0.xPos == point.x && $0.yPos == point.y}.first
+    }
+}
+
 struct Point {
     var x: Int = 0
     var y: Int = 0
@@ -38,28 +59,11 @@ protocol KeyHandler {
     func keyTapped(direction: Direction)
 }
 
-protocol ApplicationLauncher {
-    func setCurrentApplication(application: Application?)
-}
-
 typealias Limits = (minX: Int, maxX: Int, minY: Int, maxY: Int)
 
-class AppSwitcherViewController: NSViewController, KeyHandler {
-
-    var launcher: ApplicationLauncher?
+class AppSwitcherViewController: NSViewController {
     
-    let applications: [Application] = {
-        return [
-            Application(name: "Xcode-beta", xPos: 0, yPos: 1),
-            Application(name: "Safari", xPos: 0, yPos: -1),
-            Application(name: "Terminal", xPos: -1, yPos: 0),
-            Application(name: "Sketch", xPos: 1, yPos: 0),
-            Application(name: "SourceTree", xPos: 1, yPos: 1),
-            Application(name: "TextEdit", xPos: -1, yPos: 1),
-            Application(name: "Tweetbot", xPos: -1, yPos: -1),
-            Application(name: "Calendar", xPos: 1, yPos: -1),
-        ]
-    }()
+    let applicationManager = ApplicationManager()
     
     var views = [Application: AppView]()
     var closeView: CloseView?
@@ -95,7 +99,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
         var maxWidth: CGFloat = 0
         var maxHeight: CGFloat = 0
         
-        for a in applications {
+        for a in applicationManager.applications {
             let x = CGFloat(a.xPos) * width + widthOffset
             let y = CGFloat(a.yPos) * height + heightOffset
             
@@ -112,7 +116,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     }
     
     func viewLimits() -> Limits {
-        return applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) {
+        return applicationManager.applications.reduce((minX: 0, maxX: 0, minY: 0, maxY: 0)) {
             (input: Limits, application) -> Limits in
             return (
                 minX: min(input.minX, application.xPos),
@@ -146,9 +150,22 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
             view.updateView()
         }
     }
-    
-    func keyTapped(direction: Direction) {
-        moveInDirection(direction)
+}
+
+extension AppSwitcherViewController: KeyListener {
+    func keyEventTriggered(keyEvent: KeyEvent) {
+        switch keyEvent {
+        case .Left:
+            moveInDirection(.Left)
+        case .Right:
+            moveInDirection(.Right)
+        case .Up:
+            moveInDirection(.Up)
+        case .Down:
+            moveInDirection(.Down)
+        default:
+            print("Not handled")
+        }
     }
     
     func moveInDirection(direction: Direction) {
@@ -165,13 +182,11 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
                 v.selected = false
             }
             
-            if let l = launcher {
-                l.setCurrentApplication(nil)
-            }
+            applicationManager.selectedApplication = nil
             return;
         }
         
-        if let application = applicationAtPoint(point) {
+        if let application = applicationManager.applicationAtPoint(point) {
             currentPoint = point
             
             if let v = closeView {
@@ -182,13 +197,7 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
                 v.selected = a == application
             }
             
-            if let l = launcher {
-                l.setCurrentApplication(application)
-            }
+            applicationManager.selectedApplication = application
         }
-    }
-    
-    func applicationAtPoint(point: Point) -> Application? {
-        return applications.filter{$0.xPos == point.x && $0.yPos == point.y}.first
     }
 }
