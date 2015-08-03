@@ -62,33 +62,30 @@ class AppSwitcherViewController: NSViewController, KeyHandler {
     }()
     
     var views = [Application: AppView]()
-    var closeView: AppView?
+    var closeView: CloseView?
     
     var currentPoint = Point()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        let dimensions = createViews(162, height: 100)
-        createCenterView(162, height: 100)
+        let limits = viewLimits()
+        let dimensions = createViews(162, height: 100, limits: limits)
+        createCloseView(162, height: 100, limits: limits)
         
         self.view.frame = CGRect(x: 0, y: 0, width: dimensions.width, height: dimensions.height)
     }
     
-    func createCenterView(width: CGFloat, height: CGFloat) {
-        let limits = viewLimits()
+    func createCloseView(width: CGFloat, height: CGFloat, limits: Limits) {
         
         let widthOffset: CGFloat = CGFloat(-limits.minX) * width
         let heightOffset: CGFloat = CGFloat(-limits.minY) * height
         
-        closeView = AppView(frame: CGRect(x: widthOffset, y: heightOffset, width: width, height: height))
+        closeView = CloseView(frame: CGRect(x: widthOffset, y: heightOffset, width: width, height: height))
         self.view.addSubview(closeView!)
-        
-        closeView!.iconView.image = NSImage(named: "Cross")
-        closeView!.appNameLabel.stringValue = "Close"
     }
     
-    func createViews(width: CGFloat, height: CGFloat) -> (width: CGFloat, height: CGFloat) {
+    func createViews(width: CGFloat, height: CGFloat, limits: Limits) -> (width: CGFloat, height: CGFloat) {
         
         let limits = viewLimits()
         
